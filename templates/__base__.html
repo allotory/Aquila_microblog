@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Welcome to MicroBlog</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- styles -->
+		<link href="../static/css/bootstrap.css" rel="stylesheet">
+		<link href="../static/css/override_defaults.css" rel="stylesheet">
+	</head>
+
+	<body>
+		<div class="topbar">
+			<div class="fill">
+				<div class="container">
+					<a class="brand" href="/index">MicroBlog</a>
+					<ul class="nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+					<form action="" class="pull-right">
+						<input class="input-small" type="text" placeholder="Username">
+						<input class="input-small" type="password" placeholder="Password">
+						<button class="btn" type="submit">Sign in</button>
+						<button class="btn">Sign up</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+
+			<div class="content">
+				{% block content %}{% endblock %}
+			</div>
+
+			<footer>
+				<p>Copyright &copy; MicroBlog 2014</p>
+			</footer>
+
+		</div>
+
+	</body>
+</html>
