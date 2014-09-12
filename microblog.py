@@ -27,8 +27,26 @@ def teardown_request(exception):
 	g.db.close()
 
 @app.route('/')
+@app.route('/index')
 def index():
 	return render_template('index.html')
+
+@app.route('/signup')
+def signup():
+	return render_template('signup.html')
+
+@app.route('/add_user', methods=['GET', 'POST'])
+def add_user():
+	error = None
+	if request.method == 'POST':
+		if request.form['password'] != request.form['confirmpwd']:
+			error = 'The New Password and Confirm New Password fields do not match.'
+		else:
+			g.db.execute('insert into user (username, password, email, role) values (?, ?, ?, ?)',
+				[request.form['username'], request.form['password'], request.form['email'], app.config['ROLE_USER']])
+			g.db.commit()
+			print request.form['username'], request.form['password'], request.form['email'], app.config['ROLE_USER']
+	return redirect(url_for('index'))
 
 if __name__ == '__main__':
 	app.run()
