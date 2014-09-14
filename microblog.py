@@ -57,15 +57,17 @@ def signin():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 	error = None
-	cur = g.db.execute("select username, password from user where username='" + request.form['username'] 
+	cur = g.db.execute("select * from user where username='" + request.form['username'] 
 		+ "' and password='" + request.form['password'] + "'")
 	u = cur.fetchall()
+	#print u
 	if not u:
 		print 'ERROR Incorrect username or password!'
 		error = 'Incorrect username or password'
 		return render_template(('signin.html'), error=error)
 	else:
 		session['logged_in'] = True
+		session['username'] = u[0][1]
 		return redirect(url_for('index'))
 
 @app.route('/signout')

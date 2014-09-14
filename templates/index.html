@@ -2,12 +2,21 @@
 
 {% block content %}
 <div class="page-header">
-	<h1>Ellery&nbsp;&nbsp;<small>Find new anytime and anywhere~</small></h1>
+	{% if session.logged_in %}
+	<h1>{{ session.username }}&nbsp;&nbsp;<small>Find new anytime and anywhere~</small></h1>
+	{% else %}
+	<h1>Guest&nbsp;&nbsp;<small>Find new anytime and anywhere~</small></h1>
+	{% endif %}
 </div>
 <div class="hero-unit">
 	<h2>Have something new to tell you</h2>
-	<p>Vestibulum id ligula porta felis euismod semper. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.</p>
-	<p><a class="btn primary large">Learn more &raquo;</a></p>
+	<br>
+	<p>
+		<textarea rows="5">
+haha
+		</textarea>
+	</p>
+	<p><a class="btn primary large" style="float:right;">Post &raquo;</a></p>
 </div>
 <hr>
 
