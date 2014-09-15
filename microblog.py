@@ -30,7 +30,13 @@ def teardown_request(exception):
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('index.html')
+	print session['username']
+	cur = g.db.execute("select * from user where username=?", [session['username']])
+	u = cur.fetchall()
+	cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
+	posts = [dict(username=session['username'], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+		
+	return render_template('index.html', posts=posts)
 
 @app.route('/signup')
 def signup():
@@ -69,7 +75,10 @@ def login():
 	else:
 		session['logged_in'] = True
 		session['username'] = u[0][1]
-		return redirect(url_for('index'))
+		cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
+		posts = [dict(username=u[0][1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+		
+		return render_template('index.html', posts=posts)
 
 @app.route('/signout')
 def signout():
@@ -86,8 +95,10 @@ def post():
 		g.db.execute('insert into post (content, timestamp, user_id) values (?, ?, ?)',
 				[request.form['content'], timestamp, u[0][0]])
 		g.db.commit()
+		cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
+		posts = [dict(username=u[0][1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
 		
-		return redirect(url_for('index'))
+		return render_template('index.html', posts=posts)
 
 if __name__ == '__main__':
 	app.run()
