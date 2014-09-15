@@ -11,19 +11,22 @@
 <div class="hero-unit">
 	<h2>Have something new to tell you</h2>
 	<br>
-	<p>
-		<textarea rows="5">
-haha
-		</textarea>
-	</p>
-	<p><a class="btn primary large" style="float:right;">Post &raquo;</a></p>
+	<form name="postform" action="{{ url_for('post')}}" method="post">
+		<input type="hidden" name="username" value="{{ session.username }}">
+		<p>
+			<textarea rows="5" name="content"></textarea>
+		</p>
+		<p><a href="javascript:postform.submit();" class="btn primary large" style="float:right;">Post &raquo;</a></p>
+	</form>
 </div>
 <hr>
 
 <div class="row">
 	<div class="span">
 		<h2>Ellery</h2>
-		<p>hahahahahahhahahahah</p>
+		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">上提出的数学的分析性是以概念为基础的，我相信弗雷格和卡尔纳普，甚至蒯因都会同意你的观点，Robert Hanna的书里也阐述得很清晰；有趣的是，康德认为数学是先天综合判断，也就是说数学的综合性是以直观为基础的，更进一步说是纯粹直观，也就是时间和空间。于是前者强调经验，后者强调先验(transzendental)，即如何使经验得以可能，而不是单纯的先天性(Apriorität)。
+
+直观与概念的一个根本区别就在于：直观是与具体的对象相联系，而概念则涉及到同一类对象的共质特征。数学命题之所以能够超出概念而成为综合命题，就是因为它是建立在直观基础上的。这样，我们就可以通过感性直观活动而为数学概念加上不属于这一概念的谓词。比如“两点之间直线最短”，在“两点”的概念中，我们并不能分析出“直线最短”的谓词，而这一谓词之所以能与主词联结从而构成一个综合命题，只有建立在空间的直观基础上。同理，算数的计数活动作为有序的相继运动则是建立在时间的前后相继性之上的，计数活动也正是对时间的一种规定，因为时间的流逝可以通过计数而表达出来。</p>
 		<p><a class="btn" href="#">View details &raquo;</a></p>
 	</div>
 </div>

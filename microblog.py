@@ -2,6 +2,7 @@
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash
 from contextlib import closing
+from  datetime  import  * 
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -74,6 +75,19 @@ def login():
 def signout():
 	session.pop('logged_in', None)
 	return redirect(url_for('index'))
+
+@app.route('/post', methods=['GET', 'POST'])
+def post():
+	if request.method == 'POST':
+		cur = g.db.execute("select * from user where username=?", [request.form['username']])
+		u = cur.fetchall()
+		now = datetime.now()
+		timestamp = now.strftime('%Y-%m-%d %H:%M:%S')
+		g.db.execute('insert into post (content, timestamp, user_id) values (?, ?, ?)',
+				[request.form['content'], timestamp, u[0][0]])
+		g.db.commit()
+		
+		return redirect(url_for('index'))
 
 if __name__ == '__main__':
 	app.run()

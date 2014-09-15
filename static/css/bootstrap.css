@@ -562,7 +562,9 @@ a:hover {
 .row > [class*="span"] {
   display: inline;
   float: left;
-  margin-left: 20px;
+  margin-left: 45px;
+  margin-right: 25px;
+  text-align:justify;
 }
 .span1 {
   width: 25px;
