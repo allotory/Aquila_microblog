@@ -30,13 +30,16 @@ def teardown_request(exception):
 @app.route('/')
 @app.route('/index')
 def index():
-	print session['username']
-	cur = g.db.execute("select * from user where username=?", [session['username']])
-	u = cur.fetchall()
-	cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
-	posts = [dict(username=session['username'], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+	if 'logged_in' in session:
+		print session['username']
+		cur = g.db.execute("select * from user where username=?", [session['username']])
+		u = cur.fetchall()
+		cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
+		posts = [dict(username=session['username'], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
 		
-	return render_template('index.html', posts=posts)
+		return render_template('index.html', posts=posts)
+	else:
+		return render_template('index.html')
 
 @app.route('/signup')
 def signup():

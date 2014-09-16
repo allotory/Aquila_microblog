@@ -12,11 +12,19 @@
 	<h2>Have something new to tell you</h2>
 	<br>
 	<form name="postform" action="{{ url_for('post')}}" method="post">
+		{% if session.logged_in %}
 		<input type="hidden" name="username" value="{{ session.username }}">
 		<p>
 			<textarea rows="5" name="content"></textarea>
 		</p>
 		<p><a href="javascript:postform.submit();" class="btn primary large" style="float:right;">Post &raquo;</a></p>
+		{% else %}
+		<input type="hidden" name="username" value="{{ session.username }}">
+		<p>
+			<textarea rows="5" name="content" disabled="disabled">You must be login when you want post something</textarea>
+		</p>
+		<p><a href="#" class="btn primary large" style="float:right;">Post &raquo;</a></p>
+		{% endif %}
 	</form>
 </div>
 <hr>
