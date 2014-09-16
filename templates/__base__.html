@@ -20,16 +20,16 @@
 						{% if not session.logged_in %}
 						<li class="active"><a href="#">Home</a></li>
 						<li><a href="#posts">Posts</a></li>
+						<li><a href="#following">Following</a></li>
 						<li><a href="#follower">Follower</a></li>
 						<li><a href="#find">Find Blog</a></li>
-						<li><a href="#contact">Contact</a></li>
 						<li><a href="#about">About</a></li>
 						{% else %}
 						<li class="active"><a href="{{ url_for('index')}}">Home</a></li>
 						<li><a href="#posts">Posts</a></li>
+						<li><a href="#following">Following</a></li>
 						<li><a href="#follower">Follower</a></li>
-						<li><a href="#find">Find Blog</a></li>
-						<li><a href="#contact">Contact</a></li>
+						<li><a href="{{ url_for('find')}}">Find Blog</a></li>
 						<li><a href="#about">About</a></li>
 						{% endif %}
 					</ul>

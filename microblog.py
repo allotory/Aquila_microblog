@@ -31,7 +31,7 @@ def teardown_request(exception):
 @app.route('/index')
 def index():
 	if 'logged_in' in session:
-		print session['username']
+		#print session['username']
 		cur = g.db.execute("select * from user where username=?", [session['username']])
 		u = cur.fetchall()
 		cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
@@ -102,6 +102,28 @@ def post():
 		posts = [dict(username=u[0][1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
 		
 		return render_template('index.html', posts=posts)
+
+@app.route('/find')
+def find():
+	cur = g.db.execute("select * from user where username!=?", [session['username']])
+	u = cur.fetchall()
+	print u
+	print len(u)
+	count = len(u)
+	c = 0
+	users_id = []
+	while c < count:
+		users_id.append([u[c][0], u[c][1]])
+		print [u[c][0], u[c][1]]
+		c += 1
+	#[[1, u'a'], [2, u'b'], [4, u'd']]
+	posts = []
+	for n in users_id:
+		cur = g.db.execute("select content, timestamp from post where user_id=?", [n[0]])
+		post = [dict(username=n[1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+		posts.append(post)
+	print posts
+	return render_template('find.html', posts=posts)
 
 if __name__ == '__main__':
 	app.run()

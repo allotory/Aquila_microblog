@@ -25,7 +25,7 @@ This is a micro blog -- "Aquila".
 
 4. Initial db in Python Shell:
 
-	\>>> from flaskr import init_db
+	\>>> from microblog import init_db
 
 	\>>> init_db()
 
