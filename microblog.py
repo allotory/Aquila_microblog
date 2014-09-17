@@ -107,8 +107,6 @@ def post():
 def find():
 	cur = g.db.execute("select * from user where username!=?", [session['username']])
 	u = cur.fetchall()
-	print u
-	print len(u)
 	count = len(u)
 	c = 0
 	users_id = []
@@ -122,7 +120,7 @@ def find():
 		cur = g.db.execute("select content, timestamp from post where user_id=?", [n[0]])
 		post = [dict(username=n[1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
 		posts.append(post)
-	print posts
+	#print posts
 	return render_template('find.html', posts=posts)
 
 if __name__ == '__main__':

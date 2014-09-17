@@ -15,3 +15,11 @@ create table post (
 	user_id integer not null,
 	foreign key(user_id) references user(id)
 );
+
+drop table if exists followers;
+create table followers (
+	follower_id integer not null,
+	followed_id integer not null,
+	foreign key(follower_id) references user(id),
+	foreign key(followed_id) references user(id)
+);
