@@ -185,6 +185,28 @@ def unfollow():
 		g.db.commit()
 		return redirect(url_for('following'))
 
+@app.route('/follower')
+def follower():
+	cur = g.db.execute("select * from user where username=?", [session['username']])
+	u = cur.fetchall()	
+	cur = g.db.execute("select * from followers where followed_id=?", [u[0][0]])
+	follower_id = cur.fetchall()
+	print follower_id
+	posts = []
+	for n in follower_id:
+		cur = g.db.execute("select content, timestamp, username from user, post where user.id=post.user_id and user_id=?", [n[0]])
+		post = [dict(user_id=n[0], content=row[0], timestamp=row[1], username=row[2]) for row in cur.fetchall()]
+		posts.append(post)
+	return render_template('follower.html', posts=posts)
+
+@app.route('/remove', methods=['GET', 'POST'])
+def remove():
+	if request.method == 'POST':
+		g.db.execute('delete from followers where follower_id=?',[request.form['fid']])
+		g.db.commit()
+		return redirect(url_for('follower'))
+
+
 
 if __name__ == '__main__':
 	app.run()

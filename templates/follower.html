@@ -1,0 +1,45 @@
+{% extends '__base__.html' %}
+
+{% block content %}
+<div class="page-header">
+	{% if session.logged_in %}
+	<h1>{{ session.username }}&nbsp;&nbsp;<small>Find new anytime and anywhere~</small></h1>
+	{% else %}
+	<h1>Guest&nbsp;&nbsp;<small>Find new anytime and anywhere~</small></h1>
+	{% endif %}
+</div>
+{% if session.logged_in %}
+{% for post in posts %}
+{% for p in post %}
+<div>
+	<div>
+		<form id="removeform" action="{{ url_for('remove') }}" method="post">
+			<input type="hidden" name="fid" value="{{ p.user_id }}">
+			<h2>{{ p.username}}&nbsp;&nbsp;<small>{{ p.timestamp}}</small></h2>
+			<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">{{ p.content }}</p>
+			<p><input type="submit" value="Remove"></p>
+		</form>
+	</div>
+</div>
+<hr>{% else %}
+<div class="row">
+	<div class="span">
+		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">
+			<em>Unbelievable.  No post here so far！</em>
+		</p>
+	</div>
+</div>
+<hr>
+{% endfor %}
+{% endfor %}
+{% else %}
+<div class="row">
+	<div class="span">
+		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">
+			<em>Unbelievable.  You must be login！</em>
+		</p>
+	</div>
+</div>
+<hr>
+{% endif %}
+{% endblock %}
