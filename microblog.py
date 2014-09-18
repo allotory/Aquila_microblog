@@ -163,5 +163,28 @@ def tofollow():
 		#return render_template('find.html', posts=posts)
 		return redirect(url_for('find'))
 
+@app.route('/following', methods=['GET', 'POST'])
+def following():
+	cur = g.db.execute("select * from user where username=?", [session['username']])
+	u = cur.fetchall()	
+	cur = g.db.execute("select * from followers where follower_id=?", [u[0][0]])
+	followed_id = cur.fetchall()	
+	#print followed_id
+	posts = []
+	for n in followed_id:
+		cur = g.db.execute("select content, timestamp, username from user, post where user.id=post.user_id and user_id=?", [n[1]])
+		post = [dict(user_id=n[1], content=row[0], timestamp=row[1], username=row[2]) for row in cur.fetchall()]
+		posts.append(post)
+	#print posts
+	return render_template('following.html', posts=posts)
+
+@app.route('/unfollow', methods=['GET', 'POST'])
+def unfollow():
+	if request.method == 'POST':
+		g.db.execute('delete from followers where followed_id=?',[request.form['fid']])
+		g.db.commit()
+		return redirect(url_for('following'))
+
+
 if __name__ == '__main__':
 	app.run()
