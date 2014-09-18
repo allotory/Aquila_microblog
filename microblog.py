@@ -105,23 +105,63 @@ def post():
 
 @app.route('/find')
 def find():
+
+	#the user that i followed
+	cur = g.db.execute("select * from user where username=?", [session['username']])
+	me = cur.fetchall()
+	#print 'me' + str(me)
+	cur = g.db.execute("select * from followers where follower_id=?", [me[0][0]])
+	ifollowed = cur.fetchall()
+	#print "i followed" + str(ifollowed)
+	#i followed[(1, 2), (1, 3)]]
+	ifos = []
+	for ifo in ifollowed:
+		ifos.append(ifo[1])
+	#[2,3]
+
+	# all user except me
 	cur = g.db.execute("select * from user where username!=?", [session['username']])
 	u = cur.fetchall()
 	count = len(u)
 	c = 0
 	users_id = []
+
 	while c < count:
-		users_id.append([u[c][0], u[c][1]])
-		print [u[c][0], u[c][1]]
+		if u[c][0] in ifos:
+			print str(u[c][0]) + "in ifos"
+		else:
+			users_id.append([u[c][0], u[c][1]])
+			#print [u[c][0], u[c][1]]
 		c += 1
-	#[[1, u'a'], [2, u'b'], [4, u'd']]
+	#print users_id
+	#[[2, u'b'], [3, u'c'], [4, u'd']]
+
 	posts = []
 	for n in users_id:
 		cur = g.db.execute("select content, timestamp from post where user_id=?", [n[0]])
-		post = [dict(username=n[1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+		post = [dict(user_id=n[0], username=n[1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
 		posts.append(post)
 	#print posts
 	return render_template('find.html', posts=posts)
+
+@app.route('/tofollow', methods=['GET', 'POST'])
+def tofollow():
+	if request.method == 'POST':
+		#followed
+		#print 'username:'+request.form['uid']
+		cur = g.db.execute("select * from user where id=?", [request.form['uid']])
+		u_followed = cur.fetchall()
+		#print u_followed
+		#follower
+		cur = g.db.execute("select * from user where username=?", [session['username']])
+		u_follower = cur.fetchall()
+		#print u_follower
+		g.db.execute('insert into followers (follower_id, followed_id) values (?, ?)',
+				[u_follower[0][0], u_followed[0][0]])
+		g.db.commit()
+
+		#return render_template('find.html', posts=posts)
+		return redirect(url_for('find'))
 
 if __name__ == '__main__':
 	app.run()

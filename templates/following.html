@@ -11,17 +11,15 @@
 {% if session.logged_in %}
 {% for post in posts %}
 {% for p in post %}
-<div>
-	<div>
-		<form id="followingform" action="{{ url_for('tofollow') }}" method="post">
-			<input type="hidden" name="uid" value="{{ p.user_id }}">
-			<h2>{{ p.username}}&nbsp;&nbsp;<small>{{ p.timestamp}}</small></h2>
-			<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">{{ p.content }}</p>
-			<p><input type="submit" value="Follow"></p>
-		</form>
+<div class="row">
+	<div class="span">
+		<h2>{{ p.username}}&nbsp;&nbsp;<small>{{ p.timestamp}}</small></h2>
+		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">{{ p.content }}</p>
+		<p><a class="btn" href="#">Follow &raquo;</a></p>
 	</div>
 </div>
-<hr>{% else %}
+<hr>
+{% else %}
 <div class="row">
 	<div class="span">
 		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">
