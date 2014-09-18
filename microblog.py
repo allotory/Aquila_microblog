@@ -34,8 +34,8 @@ def index():
 		#print session['username']
 		cur = g.db.execute("select * from user where username=?", [session['username']])
 		u = cur.fetchall()
-		cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
-		posts = [dict(username=session['username'], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+		cur = g.db.execute("select content, timestamp, username from user, post where user.id=post.user_id and (user_id=? or user_id in (select followed_id from followers where follower_id=?))", [u[0][0], u[0][0]])
+		posts = [dict(content=row[0], timestamp=row[1], username=row[2], ) for row in cur.fetchall()]
 		
 		return render_template('index.html', posts=posts)
 	else:
@@ -78,8 +78,8 @@ def login():
 	else:
 		session['logged_in'] = True
 		session['username'] = u[0][1]
-		cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
-		posts = [dict(username=u[0][1], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+		cur = g.db.execute("select content, timestamp, username from user, post where user.id=post.user_id and (user_id=? or user_id in (select followed_id from followers where follower_id=?))", [u[0][0], u[0][0]])
+		posts = [dict(content=row[0], timestamp=row[1], username=row[2], ) for row in cur.fetchall()]
 		
 		return render_template('index.html', posts=posts)
 
@@ -206,7 +206,18 @@ def remove():
 		g.db.commit()
 		return redirect(url_for('follower'))
 
-
+@app.route('/myposts')
+def myposts():
+	if 'logged_in' in session:
+		#print session['username']
+		cur = g.db.execute("select * from user where username=?", [session['username']])
+		u = cur.fetchall()
+		cur = g.db.execute("select content, timestamp from post where user_id=?", [u[0][0]])
+		posts = [dict(username=session['username'], content=row[0], timestamp=row[1]) for row in cur.fetchall()]
+		
+		return render_template('posts.html', posts=posts)
+	else:
+		return render_template('posts.html')
 
 if __name__ == '__main__':
 	app.run()

@@ -1,0 +1,61 @@
+{% extends '__base__.html' %}
+
+{% block content %}
+<div class="page-header">
+	{% if session.logged_in %}
+	<h1>{{ session.username }}&nbsp;&nbsp;<small>Find new anytime and anywhere~</small></h1>
+	{% else %}
+	<h1>Guest&nbsp;&nbsp;<small>Find new anytime and anywhere~</small></h1>
+	{% endif %}
+</div>
+<div class="hero-unit">
+	<h2>Have something new to tell you</h2>
+	<br>
+	<form name="postform" action="{{ url_for('post')}}" method="post">
+		{% if session.logged_in %}
+		<input type="hidden" name="username" value="{{ session.username }}">
+		<p>
+			<textarea rows="5" name="content"></textarea>
+		</p>
+		<p><a href="javascript:postform.submit();" class="btn primary large" style="float:right;">Post &raquo;</a></p>
+		{% else %}
+		<input type="hidden" name="username" value="{{ session.username }}">
+		<p>
+			<textarea rows="5" name="content" disabled="disabled">You must be login when you want post something</textarea>
+		</p>
+		<p><a href="#" class="btn primary large" style="float:right;">Post &raquo;</a></p>
+		{% endif %}
+	</form>
+</div>
+<hr>
+{% if session.logged_in %}
+{% for post in posts %}
+<div class="row">
+	<div class="span">
+		<h2>{{ post.username}}&nbsp;&nbsp;<small>{{ post.timestamp}}</small></h2>
+		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">{{ post.content }}</p>
+		<p><a class="btn" href="#">View details &raquo;</a></p>
+	</div>
+</div>
+<hr>
+{% else %}
+<div class="row">
+	<div class="span">
+		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">
+			<em>Unbelievable.  No post here so far！</em>
+		</p>
+	</div>
+</div>
+<hr>
+{% endfor %}
+{% else %}
+<div class="row">
+	<div class="span">
+		<p style="padding-top: 5px;letter-spacing:1px;line-height:12pt">
+			<em>Unbelievable.  You must be login！</em>
+		</p>
+	</div>
+</div>
+<hr>
+{% endif %}
+{% endblock %}

@@ -26,7 +26,7 @@
 						<li><a href="#about">About</a></li>
 						{% else %}
 						<li class="active"><a href="{{ url_for('index')}}">Home</a></li>
-						<li><a href="#posts">Posts</a></li>
+						<li><a href="{{ url_for('myposts')}}">Posts</a></li>
 						<li><a href="{{ url_for('following') }}">Following</a></li>
 						<li><a href="{{ url_for('follower')}}">Follower</a></li>
 						<li><a href="{{ url_for('find')}}">Find Blog</a></li>
