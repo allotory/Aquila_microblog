@@ -14,13 +14,13 @@ Aquila Microblog is a decently featured microblogging web application written in
 
 ## Installation for Development
 
-* create virtualenv
+* create virtualenv.
 
 	    > cd Aquila_microblog
 	    
 	    > virtualenv venv
 
-2. activate virtualenv
+* activate virtualenv.
     
     in Linux:
     	
@@ -30,23 +30,25 @@ Aquila Microblog is a decently featured microblogging web application written in
     
     	venv\scripts> activate
 
-3. install Flask in venv
+* install Flask in venv.
 
 		> pip install Flask
 
-4. Initial db in Python Shell:
+* Initial db in Python Shell.
 
 		>>> from microblog import init_db
 	
 		>>> init_db()
 
-5. run microblog
+* run microblog.
 
 		Aquila_microblog> python microblog.py
 
 ## Contributing
 
-Pull requests are being accepted! If you would like to contribute, simply fork
+Pull requests are being accepted! 
+
+If you would like to contribute, simply fork
 the project and make your changes.
 
 ##Support:
